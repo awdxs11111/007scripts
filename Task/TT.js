@@ -59,7 +59,7 @@ if ($.isNode()) {
    TTrefer = process.env.TTREFER .split('\n');
    console.log(`您选择的是用换行隔开\n`)
   } else {
-   TTrefer = process.env.TTREFER .split()
+   TTrefer = [process.env.TTREFER]
   };
   if (process.env.TTBODY&& process.env.TTBODY.indexOf('#') > -1) {
    TTbody= process.env.TTBODY.split('#');
@@ -69,7 +69,7 @@ if ($.isNode()) {
    TTbody= process.env.TTBODY.split('\n');
    console.log(`您选择的是用换行隔开\n`)
   } else {
-   TTbody= process.env.TTBODY.split()
+   TTbody= [process.env.TTBODY]
   };
   Object.keys(TTrefer).forEach((item) => {
         if (TTrefer[item]) {
@@ -92,26 +92,25 @@ if ($.isNode()) {
     TTbodyArr.push($.getdata(`TTbody${i}`))
   }
 }
+
 !(async () => {
 if (!TTreferArr[0] && !TTbodyArr[0] ) {
     $.msg($.name, '【提示】请先获取TT语音一cookie')
     return;
   }
    console.log(`------------- 共${TTbodyArr.length}个账号----------------\n`)
-  message = ''
-  for (let i = 0; i < TTbodyArr.length; i++) {
+   message = ''  
+for (let i = 0; i < TTbodyArr.length; i++) {
     if (TTbodyArr[i]) {
-      
+     
       TTrefer= TTreferArr[i];
       TTbody = TTbodyArr[i];
       $.index = i + 1;
       console.log(`\n开始【TT语音${$.index}】`)
-      message += `\n开始【TT语音${$.index}】`
       await checkin() 
-      //await showmsg()
+      await showmsg()
   }
  }
- await showmsg()
 })()
     .catch((e) => $.logErr(e))
     .finally(() => $.done())
@@ -142,7 +141,7 @@ async function checkin(){
        'Content-Type': 'application/json',
        'Host': 'node.52tt.com',
        'Origin': 'http://appcdn.52tt.com',
-        Refer: TTrefer,
+       'Referer': `${TTrefer}`,
        'User-Agent': `Mozilla/5.0 (iPhone; CPU iPhone OS 13_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 TT/5.5.6 NetType/Wifi`
        },
     	body: TTbody
@@ -155,8 +154,8 @@ async function checkin(){
          for(let i = 0; i < 29; i++){
          let day = result.data.record.i == 0 ? (i -1) : i
          }
-	  console.log(`打卡成功：获得${result.data.curMoney}元\n`)
-          message += `打卡成功：获得${result.data.curMoney}元`
+	  console.log(`打卡成功：累计获得${result.data.curMoney}元\n`)
+          message += `打卡成功：累计获得${result.data.curMoney}元`
         }else if(result.code == 2){
         console.log(result.msg+`\n`)
         message += result.msg

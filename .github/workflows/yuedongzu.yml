@@ -1,12 +1,9 @@
-# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-
-name: QQ阅读APP
+name: 悦动族
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/30 0-3,6-14 * * *'
+    - cron: '0,30 0-23 * * *'
   # watch:
   #       types: started
   # repository_dispatch:
@@ -16,9 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.repository.owner.id == github.event.sender.id
     env:
-      URL: "https://raw.githubusercontent.com/ziye66666/JavaScript/main/Task/QQread.js"
-      RUNFILE: "Task/QQread.js"      
-      QQ_QQreadURL: ${{ secrets.QQ_QQreadURL }}
+      URL: "https://raw.githubusercontent.com/ziye11/JavaScript/main/Task/yuedongzu.js"
+      RUNFILE: "Task/yuedongzu.js"      
+      YDZ_yuedongzuTOKEN: ${{ secrets.YDZ_YUEDONGZUTOKEN }}
+      YDZ_CASH: ${{ secrets.YDZ_CASH }}
       PUSH_KEY: ${{ secrets.PUSH_KEY }}
       BARK_PUSH: ${{ secrets.BARK_PUSH }}
       BARK_SOUND: ${{ secrets.BARK_SOUND }}
@@ -47,10 +45,7 @@ jobs:
         #if: env.RLHEADER
         run: |
           npm install
-      - name: '运行 【QQ阅读APP】'
+      - name: '运行 【悦动族】'
         #if: env.RLHEADER
         run: |
-          node Task/QQread.js
-
-
-
+          node Task/actions.js
