@@ -63,6 +63,8 @@ hostname = *.reader.yueyouxs.com
 
 
 const $ = new Env('阅友小说');
+const notify = $.isNode() ? require("./sendNotify") : ``;
+$.message = '';
 let status;
 status = (status = ($.getval("yyxsstatus") || "1") ) > 1 ? `${status}` : ""; // 账号扩展字符
 const yyxsspurlArr = [], yyxssphdArr = [],yyxsspbodyArr = [],yyxsjsurlArr = [],yyxsjsbodyArr = [],yyxsscurlArr = [],yyxsschdArr = [],yyxscjurlArr = [],yyxscjhdArr = [],yyxsxxurlArr = [],yyxscount = ''
@@ -172,7 +174,7 @@ let yyxsxxurl = $.getdata('yyxsxxurl')
 	
   Object.keys(yyxsxxurl).forEach((item) => {
         if (yyxsxxurl[item]) {
-          yyxsxxurl.push(yyxsxxurl[item])
+          yyxsxxurlArr.push(yyxsxxurl[item])
         }
     });
     Object.keys(yyxsspurl).forEach((item) => {
@@ -281,8 +283,10 @@ Object.keys(yyxscjhd).forEach((item) => {
 
       
   }
- 
-}}
+
+}
+           
+}
 
 })()
   .catch((e) => $.logErr(e))
@@ -377,13 +381,13 @@ function yyxssp(timeout = 0) {
       }
 let url = {
         url : yyxsspurl,
-        headers : JSON.parse(yyxsschd),
+        headers : JSON.parse(yyxssphd),
         body : yyxsspbody,}
       $.post(url, async (err, resp, data) => {
         try {
-          
+    
     const result = JSON.parse(data)
-    console.log('\n阅友小说视频奖励领取回执:'+data)
+    
         if(result.code == 0){
           console.log('\n阅友小说视频奖励领取回执:成功🌝') 
            await yyxssp();
@@ -392,7 +396,7 @@ let url = {
 console.log('\n阅友小说视频奖励领取回执:失败🚫 '+result.msg)
 }
         } catch (e) {
-          //$.logErr(e, resp);
+          $.logErr(e, resp);
         } finally {
           resolve()
         }
@@ -452,7 +456,8 @@ let url = {
            
         } else {
        
-       console.log('\n阅友小说转盘抽奖回执:失败🚫 '+result.msg) 
+       console.log('\n阅友小说转盘抽奖回执:失败🚫 '+result.msg);
+	return;
         }} catch (e) {
           //$.logErr(e, resp);
         } finally {
@@ -465,26 +470,28 @@ let url = {
 //阅友小说信息
 function yyxsxx(timeout = 0) {
   return new Promise((resolve) => {
-//console.log(yyxsscurl)
+//console.log(yyxsxxurl)
 let url = {
         url : yyxsxxurl,
       headers : JSON.parse(yyxssphd),
-        body : '',
-       
-}      
+        body : ''
+       }      
+
       $.post(url, async (err, resp, data) => {
         try {
-         const result = JSON.parse(data)
+        //console.log(data); 
+	const result = JSON.parse(data)
+	 
         if (result.code == 0) {
          // console.log(data)
-          console.log('\n阅友小说用户信息回执:成功🌝 \n\n------------- 当前账号信息 -------------\n用户id:'+result.data.uc.User.id+'\n金币数:'+result.data.uc.User.acctInfo.coins+'个，约等于:'+result.data.uc.User.acctInfo.coins / 10000+'元\n'+result.data.uc.dailyMsg+'\n'+result.data.uc.totalMsg)
-           
+          console.log('\n阅友小说用户信息回执:成功🌝 \n\n------------- 当前账号信息 -------------\n用户id:'+result.data.uc.User.id+'\n金币数:'+result.data.uc.User.acctInfo.coins+'个，约等于:'+result.data.uc.User.acctInfo.coins / 10000+'元\n'+result.data.uc.dailyMsg+'\n'+result.data.uc.totalMsg);
+          await notify.sendNotify( `阅友小说${$.index}🔔`, '【微信号】：'+result.data.uc.User.wechatNickName+'\n【用户id】：'+result.data.uc.User.id+'\n【金币数】：'+result.data.uc.User.acctInfo.coins+'个，约等于: '+result.data.uc.User.acctInfo.coins / 10000+'元\n'+'【阅读时长】：'+result.data.uc.dailyMsg+'，'+result.data.uc.totalMsg); 
            
         } else {
        
        console.log('\n阅友小说用户信息回执:失败🚫 '+msg) 
         }} catch (e) {
-          //$.logErr(e, resp);
+          $.logErr(e, resp);
         } finally {
           resolve()
         }
