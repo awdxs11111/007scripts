@@ -1,23 +1,25 @@
-name: 蜗牛吧
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: 评有圈
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '5,35 2-14 * * *'
+    - cron: '*/20 * * * *'
   # watch:
   #       types: started
   # repository_dispatch:
-  #   types: wnb
+  #   types: jd_cash
 jobs:
   build:
     runs-on: ubuntu-latest
     if: github.event.repository.owner.id == github.event.sender.id
     env:
-      URL: "https://raw.githubusercontent.com/ZhiYi-N/Private-Script/master/Scripts/ranlv.js"
-      RUNFILE: "ranlv.js"
-      WNBURL: ${{ secrets.WNBURL }}
-      WNBHD: ${{ secrets.WNBHD }}
-      WNBBODY: ${{ secrets.WNBBODY }}
+      URL: "https://raw.githubusercontent.com/ziye66666/JavaScript/main/Task/QQread.js"
+      RUNFILE: "Task/QQread.js"      
+      PYQUA: ${{ secrets.PYQUA }}
+      PYQAD: ${{ secrets.PYQAD }}
       PUSH_KEY: ${{ secrets.PUSH_KEY }}
       BARK_PUSH: ${{ secrets.BARK_PUSH }}
       BARK_SOUND: ${{ secrets.BARK_SOUND }}
@@ -43,10 +45,13 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('package-lock.json') }} # 使用 package-lock.json 的 Hash 作为缓存的 key。也可以使用 package.json 代替
       - name: npm install
-        if: env.WNBHD
+        #if: env.RLHEADER
         run: |
           npm install
-      - name: '运行 【蜗牛吧】'
-        if: env.WNBHD
+      - name: '运行 【评有圈】'
+        #if: env.RLHEADER
         run: |
-          node Task/wnb.js
+          node Task/pyq.js
+          
+          
+          

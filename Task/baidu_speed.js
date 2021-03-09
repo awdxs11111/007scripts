@@ -240,6 +240,7 @@ function TaskCenter() {
         for (x in tasks) {
         if (isblack == true) {
         $.msg($.name + " 账号" + username + "已黑号", "您的金币和余额已被冻结，请联系客服处理");
+        $.log($.name + " 账号" + username + "已黑号", "您的金币和余额已被冻结，请联系客服处理");
         break;
        }
           taskid = tasks[x].taskId;
@@ -263,8 +264,9 @@ function TaskCenter() {
       } catch(e) {
         $.logErr(e, data);
       } finally {
-        $.msg($.name, $.sub, $.desc)
-         if ($.time("HH") == "20") {
+         //$.log("当前小时： "+$.time("HH"))
+         $.msg($.name, $.sub, $.desc)
+         if ($.time("HH") == "14" || $.time("HH") == "15") {
             await notify.sendNotify($.name, $.sub + $.desc);
          }
         resolve()
