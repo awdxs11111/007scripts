@@ -205,7 +205,7 @@ if (!COOKIE.flwurlVal) {
         flwheaderArr.push($.getdata("flwheader"));
         flwspbodyArr.push($.getdata("flwspbody"));
         flwqwbodyArr.push($.getdata("flwqwbody"));
-        flwydbodyArr.push($.getdata("flwydbody"));
+       // flwydbodyArr.push($.getdata("flwydbody"));
         // 根据boxjs中设置的额外账号数，添加存在的账号数据进行任务处理
         if ("flwCASH") {
             CASH = $.getval("flwCASH") || '0';
@@ -220,7 +220,7 @@ if (!COOKIE.flwurlVal) {
                 flwheaderArr.push($.getdata(`flwheader${i}`));
                 flwspbodyArr.push($.getdata(`flwspbody${i}`));
                 flwqwbodyArr.push($.getdata(`flwqwbody${i}`));
-                flwydbodyArr.push($.getdata(`flwydbody${i}`));
+                //flwydbodyArr.push($.getdata(`flwydbody${i}`));
             }
         }
     }
@@ -731,15 +731,15 @@ function DHlist(timeout = 0) {
             $.get(url, async (err, resp, data) => {
                 try {
                     if (logs) $.log(`${O}, 兑换目录🚩: ${data}`);
+                    //$.log(`${O}, 兑换目录🚩: ${data}`);
                     $.DHlist = JSON.parse(data);
                     if ($.DHlist.status && $.DHlist.status == 1) {
                         wu = $.DHlist.data.rewards.find(item => item.sort === "31");
                         wushi = $.DHlist.data.rewards.find(item => item.sort === "30");
                         yibai = $.DHlist.data.rewards.find(item => item.sort === "29");
-                       $.message += '【' + wu.title + '】:库存' + wu.stock + '份\n'  
-                       $.log('【' + wu.title + '】:库存' + wu.stock + '份\n'); 
-                      if (wu && wu.stock >= 5) {
+                      if (wu && wu.stock >= 1) {
                             $.message += '【' + wu.title + '】:库存' + wu.stock + '份\n'
+                          $.log('【' + wu.title + '】:库存' + wu.stock + '份\n'); 
                         }
                         if (wushi) {
                             $.message += '【' + wushi.title + '】:库存' + wushi.stock + '份\n'
