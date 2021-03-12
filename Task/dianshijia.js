@@ -103,6 +103,7 @@ if (isGetCookie = typeof $request !== 'undefined') {
     }
     timeZone = new Date().getTimezoneOffset() / 60;  //时区
     timestamp = Date.now() + (8 + timeZone) * 60 * 60*1000;  //时间戳
+    console.log(`\n 时间戳： ${timestamp}\n`);
     bjTime = new Date(timestamp).toLocaleString('zh', {hour12: false,timeZoneName: 'long'}); //标准北京时间
     console.log(`\n === 脚本执行 ${bjTime} ===\n`);
     console.log(`------------- 共${tokenArr.length}个账号`);
@@ -265,7 +266,7 @@ function cashlist() {
             let result = JSON.parse(data)
             let totalcash = Number(),
                 cashres = "";
-            //console.log(`提现列表: ${data}`)
+            console.log(`提现列表: ${data}`)
             if (result.errCode == 0) {
                 for (s = 0; s < result.data.length; s++) {
                     if (result.data[s].type == '2' && result.data[s].ctime >= parseInt(timestamp/1000)) {
@@ -493,6 +494,7 @@ function Withdrawal() {
             headers: JSON.parse(signheaderVal)
         }, (error, response, data) => {
             if (logs) $.log(`金币随机兑换 : ${data}\n`)
+            $.log(`金币随机兑换 : ${data}\n`)
             let todrawal = JSON.parse(data);
             if (todrawal.errCode == 0) {
                 detail += `【金额提现】✅ 到账` + todrawal.data.price / 100 + `元 🌷\n`

@@ -142,6 +142,9 @@ function getsign() {
             let result = JSON.parse(data)
             if (result.status == 10000) {
                 wbsign = `【微博签到】✅ 连续签到${result.data.continuous}天，收益: ${result.data.desc}💰\n`
+                if (cookie) {
+                    await getcash()
+                }
             } else if (result.errno == 30000) {
                 wbsign = `【每日签到】 🔁 已签到\n`
                 if (cookie) {
@@ -172,6 +175,7 @@ function getcash() {
         }
         $.get(url, async(error, resp, data) => {
             let cashres = JSON.parse(data)
+            $.log("现金响应: "+data)
             if (cashres.apiCode == 10000) {
                 signcash = " " + cashres.data.header[0].title + cashres.data.header[0].value + "元"
             }
